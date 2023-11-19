@@ -1,9 +1,18 @@
 // Main resource:
 // https://www.w3schools.com/nodejs/func_http_requestlistener.asp
 
+
+// https://www.youtube.com/watch?v=tjAeCLLwZtE
 const http = require('http');
-const hostname = '127.0.0.1';
+//const hostname = '127.0.0.1';
+const hostname = "172.21.76.61";
 const port = 8080;
+
+var os = require('os');
+
+var networkInterfaces = os.networkInterfaces();
+
+console.log(networkInterfaces);
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
