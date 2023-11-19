@@ -1,29 +1,32 @@
-const express = require('express');
-const path = require('path');
+// Main resource:
+// https://www.w3schools.com/nodejs/func_http_requestlistener.asp
 
-const app = express();
-const PORT = 8080;
+const http = require('http');
+const hostname = '127.0.0.1';
+const port = 8080;
 
-// Set the path to the directory where your HTML files reside
-const publicDirectoryPath = path.join(__dirname, 'public_pages');
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
 
-// Serve static files from the public directory
-app.use(express.static(publicDirectoryPath));
+    requested_url = req.url.toString();
+    console.log(requested_url);
 
-// Routes for different HTML pages
-app.get('/', (req, res) => {
-    res.sendFile(path.join(publicDirectoryPath, 'index.html'));
+
+    var page_name = "404";
+    if (requested_url === "/" || requested_url === "/index")
+        page_name = "index";
+    else if (requested_url === "/about")
+        page_name = "about";
+    else if (requested_url === "/contact-me")
+        page_name = "contact-me";
+
+    var fs = require("fs");
+    const file_path = "./public_pages/" + page_name + ".html";
+    var text = fs.readFileSync(file_path, "utf-8");
+    res.write(text);
+    res.end();
 });
 
-app.get('/about', (req, res) => {
-    res.sendFile(path.join(publicDirectoryPath, 'about.html'));
-});
-
-app.get('/contact-me', (req, res) => {
-    res.sendFile(path.join(publicDirectoryPath, 'contact-me.html'));
-});
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
